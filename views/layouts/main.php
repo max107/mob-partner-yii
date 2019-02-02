@@ -41,7 +41,6 @@ AppAsset::register($this);
         'items'   => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Module', 'url' => ['/module/index']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
         ],
     ]);
     NavBar::end();

@@ -39,6 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'is_active',
             'package',
             'data',
+            'created_at',
+            'updated_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
