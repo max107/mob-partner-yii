@@ -8,8 +8,10 @@ use app\models\ModuleSearch;
 use app\models\ModuleVersionSearch;
 use Yii;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * ModuleController implements the CRUD actions for Module model.
@@ -74,36 +76,35 @@ class ModuleController extends Controller
     }
 
     /**
-     * Creates a new Module model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     *
-     * @param string $type
-     *
-     * @throws NotFoundHttpException
+     * @param string|null $type
      *
      * @return mixed
      */
-    public function actionCreate(string $type)
+    public function actionCreate(string $type = null)
     {
-        static $allowed = [
-            ModuleConsts::PACKAGE_PROXY,
-            ModuleConsts::PACKAGE_AD,
-        ];
-
-        if (false === in_array($type, $allowed, true)) {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-
         $model = new Module();
         $model->package = $type;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->isPost) {
+            $parameters = Yii::$app->request->post('Module');
+            $model->setAttributes($this->fixUglyYiiJsonWorkload($parameters));
+            if ($model->validate() && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    protected function fixUglyYiiJsonWorkload(array $parameters)
+    {
+        if (isset($parameters['extrasStr'])) {
+            $parameters['extras'] = Json::decode($parameters['extrasStr'], true);
+            unset($parameters['extrasStr']);
+        }
+        return $parameters;
     }
 
     /**
@@ -120,8 +121,12 @@ class ModuleController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->isPost) {
+            $parameters = Yii::$app->request->post('Module');
+            $model->setAttributes($this->fixUglyYiiJsonWorkload($parameters));
+            if ($model->validate() && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

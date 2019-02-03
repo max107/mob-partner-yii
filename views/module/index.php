@@ -14,6 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -24,7 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'version',
             'is_active',
             'package',
-            'data',
             'created_at',
             'updated_at',
 

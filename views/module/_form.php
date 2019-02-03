@@ -1,8 +1,8 @@
 <?php
 
+use kdn\yii2\JsonEditor;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\models\ModuleConsts;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Module */
@@ -11,16 +11,17 @@ use app\models\ModuleConsts;
 
 <div class="module-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'package')->dropDownList([
-        ModuleConsts::PACKAGE_AD => ModuleConsts::PACKAGE_AD,
-        ModuleConsts::PACKAGE_PROXY => ModuleConsts::PACKAGE_PROXY,
-    ], ['disabled' => true]) ?>
+    <?= $form->field($model, 'package')->textInput(['disabled' => false === empty($model->package)]) ?>
 
-    <?= $form->field($model, 'data')->textarea(['disabled' => false === $model->getIsNewRecord()]) ?>
+    <?= $form->field($model, 'uploadedFile')->fileInput(['disabled' => false === $model->getIsNewRecord()]) ?>
 
     <?= $form->field($model, 'is_active')->checkbox() ?>
+
+    <?= $form->field($model, 'extrasStr')->widget(JsonEditor::class, [
+        'clientOptions' => ['modes' => ['code', 'tree']],
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

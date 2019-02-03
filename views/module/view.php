@@ -38,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'version',
             'is_active',
             'package',
-            'data',
             'created_at',
             'updated_at',
 
