@@ -14,22 +14,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Create new module', ['create'], ['class' => 'btn btn-success']) ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <hr>
 
-            'id',
-            'version',
-            'is_active',
-            'package',
-            'created_at',
-            'updated_at',
+    <h2>All available modules</h2>
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+    <table class="table table-bordered">
+        <tbody>
+        <?php foreach ($modules as $module) { ?>
+            <tr>
+                <td>
+                    <?php echo Html::a($module->package, ['view', 'id' => $module->id]) ?>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
 </div>

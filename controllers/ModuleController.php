@@ -40,12 +40,10 @@ class ModuleController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ModuleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $modules = Module::find()->groupBy(['package'])->all();
 
         return $this->render('index', [
-            'searchModel'  => $searchModel,
-            'dataProvider' => $dataProvider,
+            'modules'  => $modules,
         ]);
     }
 
